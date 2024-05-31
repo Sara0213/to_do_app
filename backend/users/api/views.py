@@ -8,5 +8,5 @@ from rest_framework.permissions import AllowAny
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_class = AllowAny     # kazdy moze dostac sie do tego widoku, bez rejestracji
+    permission_class = [AllowAny]     # kazdy moze dostac sie do tego widoku, bez rejestracji
     
