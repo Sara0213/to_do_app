@@ -5,5 +5,6 @@ from users.api.views import RegisterView
 router = DefaultRouter()
 
 urlpatterns = [
+    path('', include(router.urls)),
     path("register/", RegisterView.as_view(), name="register")
 ]

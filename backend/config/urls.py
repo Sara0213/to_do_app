@@ -8,5 +8,6 @@ urlpatterns = [
     path('api/todos/', include('todos.api.urls')),
     # widoki dla tokenow
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'), # logowanie
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh') # odnawianie tokena
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'), # odnawianie tokena
+    path("api-auth/", include("rest_framework.urls"))
 ]

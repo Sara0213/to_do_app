@@ -16,3 +16,10 @@ class TodoListCreateView(generics.ListCreateAPIView):
       def perform_create(self, serializer):
           serializer.save(user=self.request.user)
           
+class TodoDetailView(generics.RetrieveUpdateDestroyAPIView): 
+      serializer_class = TodoSerializer
+      permission_class = [IsAuthenticated]
+      
+      def get_queryset(self):
+          return super().get_queryset()
+      
