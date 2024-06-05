@@ -17,28 +17,28 @@ export default function LoginScreen() {
   const [error, setError] = useState('');
   const navigation = useNavigation<LoginScreenNavigationProp>();
 
-//   const handleLogin = async () => {
-//     setLoading(true);
-//     setError('');
+  const handleLogin = async () => {
+    setLoading(true);
+    setError('');
 
-//     try {
-//       const response = await api.post('/login/', {
-//         username,
-//         password,
-//       });
+    try {
+      const response = await api.post('/login/', {
+        username,
+        password,
+      });
 
-//       if (response.status === 200) {
-//         const { access, refresh } = response.data;
-//         await AsyncStorage.setItem('access_token', access);
-//         await AsyncStorage.setItem('refresh_token', refresh);
-//         navigation.navigate('Home');
-//       }
-//     } catch (err) {
-//       setError('Failed to log in');
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
+      if (response.status === 200) {
+        const { access, refresh } = response.data;
+        await AsyncStorage.setItem('access_token', access);
+        await AsyncStorage.setItem('refresh_token', refresh);
+        navigation.navigate('Home');
+      }
+    } catch (err) {
+      setError('Failed to log in');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -57,9 +57,9 @@ export default function LoginScreen() {
         secureTextEntry
       />
       {error ? <Text style={styles.error}>{error}</Text> : null}
-      {/* <Button mode="contained" onPress={handleLogin} loading={loading} style={styles.button}>
+      <Button mode="contained" onPress={handleLogin} loading={loading} style={styles.button}>
         Login
-      </Button> */}
+      </Button>
       <Button
         mode="outlined"
         onPress={() => navigation.navigate('Register')}
