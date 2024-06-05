@@ -32,8 +32,7 @@ export default function RegisterScreen() {
       });
       console.log(response)
       if (response.status === 201) {
-        // Handle successful registration, e.g., navigate to login screen
-        // navigation.navigate('Login', { message: 'Registration successful! Please log in.' });
+        navigation.navigate('Login', { message: 'Registration successful! Please log in.' });
       }
     } catch (err: any) {
         if (err.response && err.response.data) {
