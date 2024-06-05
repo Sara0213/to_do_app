@@ -7,7 +7,7 @@ from todos.models import Todo
 # Create your views here.
 class TodoListCreateView(generics.ListCreateAPIView):
       serializer_class = TodoSerializer
-      permission_class = [IsAuthenticated]
+      permission_classes = [IsAuthenticated]
       
       def get_queryset(self):
           user = self.request.user
@@ -18,7 +18,7 @@ class TodoListCreateView(generics.ListCreateAPIView):
           
 class TodoDetailView(generics.RetrieveUpdateDestroyAPIView): 
       serializer_class = TodoSerializer
-      permission_class = [IsAuthenticated]
+      permission_classes = [IsAuthenticated]
       
       def get_queryset(self):
           return super().get_queryset()
