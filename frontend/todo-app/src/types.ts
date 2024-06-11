@@ -12,4 +12,14 @@ export type RootStackParamList = {
     Register: undefined;
     ProtectedRoute: undefined
   };
+
+
+export type Todo = {
+    id: number;
+    name: string;
+    description: string;
+    created_at: string;
+    is_completed: boolean;
+  };
+  
   

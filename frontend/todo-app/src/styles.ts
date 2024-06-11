@@ -35,4 +35,30 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  todoItem: {
+    padding: 16,
+    marginVertical: 8,
+    backgroundColor: '#f9f9f9',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+  todoTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  noTodosContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noTodosText: {
+    fontSize: 18,
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  createTodoButton: {
+    marginTop: 16,
+  },
 });
