@@ -64,4 +64,7 @@ export const styles = StyleSheet.create({
   descriptionInput: {
     height: 100,
   },
+  scrollView: {
+    paddingBottom: 16,
+  },
 });

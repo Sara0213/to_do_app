@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
+import { View, ActivityIndicator, ScrollView, TouchableOpacity } from 'react-native';
 import { Text, Button } from 'react-native-paper';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -39,17 +39,16 @@ export default function HomeScreen() {
     navigation.navigate('Login');
   };
 
-  const renderTodo = ({ item }: { item: Todo }) => (
-    <TouchableOpacity onPress={() => navigation.navigate('TodoDetail', {todoId: item.id})}>
-    <View style={styles.todoItem}>
-      <Text style={styles.todoTitle}>{item.name}</Text>
-      <Text>{item.description}</Text>
-      <Text>{item.created_at}</Text>
-      <Text>{item.is_completed ? 'Completed' : 'Pending'}</Text>
-    </View>
+  const renderTodo = (todo: Todo) => (
+    <TouchableOpacity key={todo.id} onPress={() => navigation.navigate('TodoDetail', { todoId: todo.id })}>
+      <View style={styles.todoItem}>
+        <Text style={styles.todoTitle}>{todo.name}</Text>
+        <Text>{todo.description}</Text>
+        <Text>{todo.created_at}</Text>
+        <Text>{todo.is_completed ? 'Completed' : 'Pending'}</Text>
+      </View>
     </TouchableOpacity>
   );
-
   if (loading) {
     return (
       <View style={styles.loaderContainer}>
@@ -64,10 +63,9 @@ export default function HomeScreen() {
         Logout
       </Button>
       {todos.length > 0 ? (
-        <FlatList
-          data={todos}
-          renderItem={renderTodo}
-        />
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        {todos.map(renderTodo)}
+      </ScrollView>
         
       ) : (
         <View style={styles.noTodosContainer}>
