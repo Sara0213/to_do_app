@@ -10,6 +10,7 @@ export type RootStackParamList = {
     Home: undefined;
     Login: { message: string } | undefined;
     Register: undefined;
+    CreateTodo: undefined;
     ProtectedRoute: undefined
   };
 

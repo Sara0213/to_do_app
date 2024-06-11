@@ -61,4 +61,7 @@ export const styles = StyleSheet.create({
   createTodoButton: {
     marginTop: 16,
   },
+  descriptionInput: {
+    height: 100,
+  },
 });

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { View, ActivityIndicator, FlatList } from 'react-native';
 import { Text, Button } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { styles } from '../styles';
@@ -11,24 +11,27 @@ import api from '../api';
 type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
 export default function HomeScreen() {
-  const [tasks, setTasks] = useState<Todo[]>([]);
+  const [todos, setTodos] = useState<Todo[]>([]);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation<HomeScreenNavigationProp>();
 
-  useEffect(() => {
-    const fetchTodos = async () => {
-      try {
-        const response = await api.get('/api/todos/');
-        setTasks(response.data);
-      } catch (error) {
-        console.error('Failed to fetch todos', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchTodos = async () => {
+    try {
+      const response = await api.get('/api/todos/');
+      setTodos(response.data);
+    } catch (error) {
+      console.error('Failed to fetch todos', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchTodos();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchTodos();
+    }, [])
+  );
+
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem('access_token');
@@ -36,7 +39,7 @@ export default function HomeScreen() {
     navigation.navigate('Login');
   };
 
-  const renderTask = ({ item }: { item: Todo }) => (
+  const renderTodo = ({ item }: { item: Todo }) => (
     <View style={styles.todoItem}>
       <Text style={styles.todoTitle}>{item.name}</Text>
       <Text>{item.description}</Text>
@@ -58,24 +61,24 @@ export default function HomeScreen() {
       <Button mode="contained" onPress={handleLogout} style={styles.button}>
         Logout
       </Button>
-      {tasks.length > 0 ? (
+      {todos.length > 0 ? (
         <FlatList
-          data={tasks}
-          renderItem={renderTask}
-          keyExtractor={(item) => item.id.toString()}
+          data={todos}
+          renderItem={renderTodo}
         />
+        
       ) : (
         <View style={styles.noTodosContainer}>
           <Text style={styles.noTodosText}>You don't have any tasks</Text>
-          <Button
-            mode="contained"
-            // onPress={() => navigation.navigate('CreateTodo')}
-            style={styles.createTodoButton}
-          >
-            Create New Task
-          </Button>
         </View>
       )}
+        <Button
+            mode="contained"
+            onPress={ () => navigation.navigate('CreateTodo')}
+            style={styles.createTodoButton}
+          >
+            Create New Task 
+        </Button>
     </View>
   );
 }
