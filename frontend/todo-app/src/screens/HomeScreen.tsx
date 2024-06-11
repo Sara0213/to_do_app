@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, ActivityIndicator, FlatList } from 'react-native';
+import { View, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
 import { Text, Button } from 'react-native-paper';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -40,12 +40,14 @@ export default function HomeScreen() {
   };
 
   const renderTodo = ({ item }: { item: Todo }) => (
+    <TouchableOpacity onPress={() => navigation.navigate('TodoDetail', {todoId: item.id})}>
     <View style={styles.todoItem}>
       <Text style={styles.todoTitle}>{item.name}</Text>
       <Text>{item.description}</Text>
       <Text>{item.created_at}</Text>
       <Text>{item.is_completed ? 'Completed' : 'Pending'}</Text>
     </View>
+    </TouchableOpacity>
   );
 
   if (loading) {

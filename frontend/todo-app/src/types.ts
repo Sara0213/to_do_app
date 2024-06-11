@@ -11,6 +11,7 @@ export type RootStackParamList = {
     Login: { message: string } | undefined;
     Register: undefined;
     CreateTodo: undefined;
+    TodoDetail: {todoId: number}
     ProtectedRoute: undefined
   };
 

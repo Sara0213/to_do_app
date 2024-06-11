@@ -5,6 +5,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import HomeScreen from './src/screens/HomeScreen';
 import CreateTodoScreen from './src/screens/CreateTodoScreen';
 import LoginScreen from './src/screens/LoginScreen';
+import TodoDetailScreen from './src/screens/TodoDetailScreen'
 import RegisterScreen from './src/screens/RegisterScreen';
 import ProtectedRoute from './src/components/ProtectedRoute';
 import { RootStackParamList } from './src/types';
@@ -29,6 +30,13 @@ export default function App() {
             {() => (
               <ProtectedRoute>
                 <CreateTodoScreen />
+              </ProtectedRoute>
+            )}
+          </Stack.Screen>
+          <Stack.Screen name="TodoDetail">
+            {() => (
+              <ProtectedRoute>
+                < TodoDetailScreen/>
               </ProtectedRoute>
             )}
           </Stack.Screen>
