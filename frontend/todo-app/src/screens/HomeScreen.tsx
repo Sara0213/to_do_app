@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, ActivityIndicator, ScrollView, TouchableOpacity } from 'react-native';
-import { Text, Button, Appbar, Chip, IconButton } from 'react-native-paper';
+import { Text, Button, Appbar, Chip, IconButton, Switch } from 'react-native-paper';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { format } from 'date-fns'; 
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { styles } from '../styles';
 import { RootStackParamList, Todo } from '../types';
@@ -15,6 +14,7 @@ type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'H
 export default function HomeScreen() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showCompleted, setShowCompleted] = useState(false);  
   const navigation = useNavigation<HomeScreenNavigationProp>();
 
   const fetchTodos = useCallback(async () => {
@@ -52,7 +52,6 @@ export default function HomeScreen() {
   };
 
   const renderTodo = (todo: Todo) => {
-
     return (
       <TouchableOpacity key={todo.id?.toString()} onPress={() => navigation.navigate('TodoDetail', { todoId: todo.id })}>
         <View style={styles.todoItem}>
@@ -91,6 +90,8 @@ export default function HomeScreen() {
     );
   };
 
+  const filteredTodos = todos.filter(todo => todo.is_completed === showCompleted);
+
   if (loading) {
     return (
       <View style={styles.loaderContainer}>
@@ -105,9 +106,16 @@ export default function HomeScreen() {
         <Appbar.Content title="Todo List" />
         <Appbar.Action icon="logout" onPress={handleLogout} />
       </Appbar.Header>
-      {todos.length > 0 ? (
+      <View style={styles.toggleContainer}>
+        <Text style={styles.toggleText}>{showCompleted ? 'Completed tasks': 'Your ongoing tasks' }</Text>
+        <Switch
+          value={showCompleted}
+          onValueChange={() => setShowCompleted(!showCompleted)}
+        />
+      </View>
+      {filteredTodos.length > 0 ? (
         <ScrollView contentContainerStyle={styles.scrollView}>
-          {todos.map(renderTodo)}
+          {filteredTodos.map(renderTodo)}
         </ScrollView>
       ) : (
         <View style={styles.noTodosContainer}>

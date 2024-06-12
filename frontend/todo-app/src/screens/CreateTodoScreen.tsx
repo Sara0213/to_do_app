@@ -52,6 +52,7 @@ export default function CreateTodoScreen() {
                  <TextInput
                     label="Description"
                     value={description}
+                    multiline
                     onChangeText={setDescription}
                     style={[styles.input, styles.descriptionInput]}
                 />

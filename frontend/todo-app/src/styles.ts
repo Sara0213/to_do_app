@@ -122,4 +122,12 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
   },
+  textInput: {
+    marginBottom: 16,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 16,
+  },
 });
