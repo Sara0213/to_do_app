@@ -86,4 +86,8 @@ export const styles = StyleSheet.create({
   chipText: {
     color: 'white',
   },
+  markAsDoneButton: {
+    marginTop: 8,
+    backgroundColor: 'green',
+  },
 });

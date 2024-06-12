@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { View, ActivityIndicator, ScrollView, TouchableOpacity } from 'react-native';
 import { Text, Button, Appbar, Chip } from 'react-native-paper';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -19,7 +19,6 @@ export default function HomeScreen() {
     setLoading(true);
     try {
       const response = await api.get('/api/todos/');
-      console.log('Fetched todos:', response.data); // Debug log to check the response
       setTodos(response.data);
     } catch (error) {
       console.error('Failed to fetch todos', error);
@@ -40,6 +39,35 @@ export default function HomeScreen() {
     navigation.navigate('Login');
   };
 
+  const handleMarkAsDone = async (todoId: number) => {
+    try {
+      await api.patch(`/api/todos/${todoId}/`, { is_completed: true });
+      fetchTodos(); 
+    } catch (error) {
+      console.error('Failed to mark todo as done', error);
+    }
+  };
+
+  const renderTodo = (todo: Todo) => (
+    <TouchableOpacity key={todo.id?.toString()} onPress={() => navigation.navigate('TodoDetail', { todoId: todo.id })}>
+      <View style={styles.todoItem}>
+        <Text style={styles.todoTitle}>{todo.name}</Text>
+        <Text>{todo.description}</Text>
+        <Text>{todo.created_at}</Text>
+        <Chip
+          style={todo.is_completed ? styles.completedChip : styles.pendingChip}
+          textStyle={styles.chipText}
+        >
+          {todo.is_completed ? 'Completed' : 'Pending'}
+        </Chip>
+        {!todo.is_completed && (
+          <Button mode="contained" onPress={() => handleMarkAsDone(todo.id)} style={styles.markAsDoneButton}>
+            Mark as Done
+          </Button>
+        )}
+      </View>
+    </TouchableOpacity>
+  );
 
   if (loading) {
     return (
@@ -57,21 +85,7 @@ export default function HomeScreen() {
       </Appbar.Header>
       {todos.length > 0 ? (
         <ScrollView contentContainerStyle={styles.scrollView}>
-          {todos.map((todo) => (
-            <TouchableOpacity key={todo.id.toString()} onPress={() => navigation.navigate('TodoDetail', { todoId: todo.id })}>
-              <View style={styles.todoItem}>
-                <Text style={styles.todoTitle}>{todo.name}</Text>
-                <Text>{todo.description}</Text>
-                <Text>{todo.created_at}</Text>
-                <Chip
-                  icon="clock-outline"
-                  textStyle={styles.chipText}
-                >
-                  {todo.is_completed ? 'Completed' : 'Pending'}
-                </Chip>
-              </View>
-            </TouchableOpacity>
-          ))}
+          {todos.map(renderTodo)}
         </ScrollView>
       ) : (
         <View style={styles.noTodosContainer}>
