@@ -71,7 +71,6 @@ export default function HomeScreen() {
                 icon="check-circle"
                 iconColor="green"
                 size={24}
-                disabled
                 style={styles.markAsDoneIcon}
               />
             )}
@@ -82,6 +81,7 @@ export default function HomeScreen() {
             <Text>Created at: {formatDate(todo.created_at)}</Text>
             <Chip
               icon={todo.is_completed ? "check" : "clock-outline"}
+              style={styles.smallChip}
             >
               {todo.is_completed ? 'Completed' : 'Pending'}
             </Chip>
