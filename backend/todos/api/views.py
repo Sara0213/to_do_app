@@ -21,5 +21,5 @@ class TodoDetailView(generics.RetrieveUpdateDestroyAPIView):
       permission_classes = [IsAuthenticated]
       
       def get_queryset(self):
-          return super().get_queryset()
-      
+          user = self.request.user
+          return Todo.objects.filter(user=user)
