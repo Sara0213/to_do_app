@@ -67,4 +67,11 @@ export const styles = StyleSheet.create({
   scrollView: {
     paddingBottom: 16,
   },
+  appBar: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 10,
+  },
 });

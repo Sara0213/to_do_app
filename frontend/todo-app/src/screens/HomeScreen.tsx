@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, ActivityIndicator, ScrollView, TouchableOpacity } from 'react-native';
-import { Text, Button } from 'react-native-paper';
+import { Text, Button, Appbar } from 'react-native-paper';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -15,7 +15,8 @@ export default function HomeScreen() {
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation<HomeScreenNavigationProp>();
 
-  const fetchTodos = async () => {
+  const fetchTodos = useCallback(async () => {
+    setLoading(true);
     try {
       const response = await api.get('/api/todos/');
       setTodos(response.data);
@@ -24,14 +25,13 @@ export default function HomeScreen() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useFocusEffect(
     useCallback(() => {
       fetchTodos();
-    }, [])
+    }, [fetchTodos])
   );
-
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem('access_token');
@@ -39,16 +39,7 @@ export default function HomeScreen() {
     navigation.navigate('Login');
   };
 
-  const renderTodo = (todo: Todo) => (
-    <TouchableOpacity key={todo.id} onPress={() => navigation.navigate('TodoDetail', { todoId: todo.id })}>
-      <View style={styles.todoItem}>
-        <Text style={styles.todoTitle}>{todo.name}</Text>
-        <Text>{todo.description}</Text>
-        <Text>{todo.created_at}</Text>
-        <Text>{todo.is_completed ? 'Completed' : 'Pending'}</Text>
-      </View>
-    </TouchableOpacity>
-  );
+
   if (loading) {
     return (
       <View style={styles.loaderContainer}>
@@ -59,26 +50,35 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Button mode="contained" onPress={handleLogout} style={styles.button}>
-        Logout
-      </Button>
+      <Appbar.Header style={styles.appBar}>
+        <Appbar.Content title="Todo List" />
+      <Appbar.Action icon="logout" onPress={handleLogout} />
+      </Appbar.Header>
       {todos.length > 0 ? (
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        {todos.map(renderTodo)}
-      </ScrollView>
-        
+        <ScrollView contentContainerStyle={styles.scrollView}>
+          {todos.map((todo) => (
+            <TouchableOpacity key={todo.id.toString()} onPress={() => navigation.navigate('TodoDetail', { todoId: todo.id })}>
+              <View style={styles.todoItem}>
+                <Text style={styles.todoTitle}>{todo.name}</Text>
+                <Text>{todo.description}</Text>
+                <Text>{todo.created_at}</Text>
+                <Text>{todo.is_completed ? 'Completed' : 'Pending'}</Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       ) : (
         <View style={styles.noTodosContainer}>
           <Text style={styles.noTodosText}>You don't have any tasks</Text>
         </View>
       )}
-        <Button
-            mode="contained"
-            onPress={ () => navigation.navigate('CreateTodo')}
-            style={styles.createTodoButton}
-          >
-            Create New Task 
-        </Button>
+      <Button
+        mode="contained"
+        onPress={() => navigation.navigate('CreateTodo')}
+        style={styles.createTodoButton}
+      >
+        Create New Task
+      </Button>
     </View>
   );
 }
