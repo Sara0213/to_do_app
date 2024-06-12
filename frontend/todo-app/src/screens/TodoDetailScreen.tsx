@@ -7,6 +7,9 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { styles } from '../styles';
 import { RootStackParamList, Todo } from '../types';
 import api from '../api';
+import { format } from 'date-fns'; 
+import { formatDate } from '../format_date';
+
 
 type TodoScreenRouteProp = RouteProp<RootStackParamList, 'TodoDetail'>;
 type TodoScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'TodoDetail'>;
@@ -53,7 +56,7 @@ export default function TodoDetailScreen() {
         <View style={styles.container}>
             <Text style={styles.title}>{todo.name}</Text>
             <Text>{todo.description}</Text>
-            <Text>Created at: {todo.created_at}</Text>
+            <Text>Created at: {formatDate(todo.created_at)}</Text>
             <Text>Status: {todo.is_completed ? 'Completed' : 'Pending'}</Text>
             <Button mode="contained" onPress={() => navigation.goBack()} style={styles.button}>
         Back

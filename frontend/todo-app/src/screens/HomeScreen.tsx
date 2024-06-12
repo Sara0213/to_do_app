@@ -3,10 +3,12 @@ import { View, ActivityIndicator, ScrollView, TouchableOpacity } from 'react-nat
 import { Text, Button, Appbar, Chip } from 'react-native-paper';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { format } from 'date-fns'; 
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { styles } from '../styles';
 import { RootStackParamList, Todo } from '../types';
 import api from '../api';
+import { formatDate } from '../format_date';
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -19,7 +21,8 @@ export default function HomeScreen() {
     setLoading(true);
     try {
       const response = await api.get('/api/todos/');
-      setTodos(response.data);
+      const sortedTodos = response.data.sort((a: Todo, b: Todo) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      setTodos(sortedTodos);
     } catch (error) {
       console.error('Failed to fetch todos', error);
     } finally {
@@ -48,12 +51,14 @@ export default function HomeScreen() {
     }
   };
 
-  const renderTodo = (todo: Todo) => (
+  const renderTodo = (todo: Todo) => {
+
+    return (
     <TouchableOpacity key={todo.id?.toString()} onPress={() => navigation.navigate('TodoDetail', { todoId: todo.id })}>
       <View style={styles.todoItem}>
         <Text style={styles.todoTitle}>{todo.name}</Text>
         <Text>{todo.description}</Text>
-        <Text>{todo.created_at}</Text>
+        <Text>Created at: {formatDate(todo.created_at)}</Text>
         <Chip
           style={todo.is_completed ? styles.completedChip : styles.pendingChip}
           textStyle={styles.chipText}
@@ -68,6 +73,7 @@ export default function HomeScreen() {
       </View>
     </TouchableOpacity>
   );
+}
 
   if (loading) {
     return (
