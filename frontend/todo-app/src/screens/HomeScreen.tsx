@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, ActivityIndicator, ScrollView, TouchableOpacity } from 'react-native';
-import { Text, Button, Appbar } from 'react-native-paper';
+import { Text, Button, Appbar, Chip } from 'react-native-paper';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -19,6 +19,7 @@ export default function HomeScreen() {
     setLoading(true);
     try {
       const response = await api.get('/api/todos/');
+      console.log('Fetched todos:', response.data); // Debug log to check the response
       setTodos(response.data);
     } catch (error) {
       console.error('Failed to fetch todos', error);
@@ -52,7 +53,7 @@ export default function HomeScreen() {
     <View style={styles.container}>
       <Appbar.Header style={styles.appBar}>
         <Appbar.Content title="Todo List" />
-      <Appbar.Action icon="logout" onPress={handleLogout} />
+        <Appbar.Action icon="logout" onPress={handleLogout} />
       </Appbar.Header>
       {todos.length > 0 ? (
         <ScrollView contentContainerStyle={styles.scrollView}>
@@ -62,7 +63,12 @@ export default function HomeScreen() {
                 <Text style={styles.todoTitle}>{todo.name}</Text>
                 <Text>{todo.description}</Text>
                 <Text>{todo.created_at}</Text>
-                <Text>{todo.is_completed ? 'Completed' : 'Pending'}</Text>
+                <Chip
+                  icon="clock-outline"
+                  textStyle={styles.chipText}
+                >
+                  {todo.is_completed ? 'Completed' : 'Pending'}
+                </Chip>
               </View>
             </TouchableOpacity>
           ))}
@@ -73,6 +79,7 @@ export default function HomeScreen() {
         </View>
       )}
       <Button
+        icon="plus"
         mode="contained"
         onPress={() => navigation.navigate('CreateTodo')}
         style={styles.createTodoButton}

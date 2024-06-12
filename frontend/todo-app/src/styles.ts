@@ -59,13 +59,16 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   createTodoButton: {
-    marginTop: 16,
+    margin: 16,
+    padding: 4,
+    marginRight: 64,
+    marginLeft: 64,
   },
   descriptionInput: {
     height: 100,
   },
   scrollView: {
-    paddingBottom: 16,
+    padding: 16,
   },
   appBar: {
     position: 'absolute',
@@ -73,5 +76,14 @@ export const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 10,
+  },
+  completedChip: {
+    backgroundColor: 'green',
+  },
+  pendingChip: {
+    backgroundColor: 'red',
+  },
+  chipText: {
+    color: 'white',
   },
 });
