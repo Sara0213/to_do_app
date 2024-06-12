@@ -109,4 +109,17 @@ export const styles = StyleSheet.create({
     transform: [{ scale: 0.8 }],
     alignSelf: 'flex-start', 
   },
+  toggleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
+    margin: 16,
+  },
+
+  toggleText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
+  },
 });
