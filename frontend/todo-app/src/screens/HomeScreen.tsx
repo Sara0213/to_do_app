@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, ActivityIndicator, ScrollView, TouchableOpacity } from 'react-native';
-import { Text, Button, Appbar, Chip } from 'react-native-paper';
+import { Text, Button, Appbar, Chip, IconButton } from 'react-native-paper';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { format } from 'date-fns'; 
@@ -54,26 +54,42 @@ export default function HomeScreen() {
   const renderTodo = (todo: Todo) => {
 
     return (
-    <TouchableOpacity key={todo.id?.toString()} onPress={() => navigation.navigate('TodoDetail', { todoId: todo.id })}>
-      <View style={styles.todoItem}>
-        <Text style={styles.todoTitle}>{todo.name}</Text>
-        <Text>{todo.description}</Text>
-        <Text>Created at: {formatDate(todo.created_at)}</Text>
-        <Chip
-          style={todo.is_completed ? styles.completedChip : styles.pendingChip}
-          textStyle={styles.chipText}
-        >
-          {todo.is_completed ? 'Completed' : 'Pending'}
-        </Chip>
-        {!todo.is_completed && (
-          <Button mode="contained" onPress={() => handleMarkAsDone(todo.id)} style={styles.markAsDoneButton}>
-            Mark as Done
-          </Button>
-        )}
-      </View>
-    </TouchableOpacity>
-  );
-}
+      <TouchableOpacity key={todo.id?.toString()} onPress={() => navigation.navigate('TodoDetail', { todoId: todo.id })}>
+        <View style={styles.todoItem}>
+          <View style={styles.checkIconContainer}>
+            {!todo.is_completed && (
+              <IconButton
+                icon="check-circle-outline"
+                iconColor="blue"
+                size={24}
+                onPress={() => handleMarkAsDone(todo.id)}
+                style={styles.markAsDoneIcon}
+              />
+            )}
+            {todo.is_completed && (
+              <IconButton
+                icon="check-circle"
+                iconColor="green"
+                size={24}
+                disabled
+                style={styles.markAsDoneIcon}
+              />
+            )}
+          </View>
+          <View style={styles.todoContent}>
+            <Text style={styles.todoTitle}>{todo.name}</Text>
+            <Text>{todo.description}</Text>
+            <Text>Created at: {formatDate(todo.created_at)}</Text>
+            <Chip
+              icon={todo.is_completed ? "check" : "clock-outline"}
+            >
+              {todo.is_completed ? 'Completed' : 'Pending'}
+            </Chip>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   if (loading) {
     return (

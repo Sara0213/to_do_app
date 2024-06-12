@@ -1,52 +1,21 @@
+// styles.ts
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-    justifyContent: 'flex-start',
+    backgroundColor: '#fff',
   },
-  title: {
-    fontSize: 24,
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  input: {
-    marginBottom: 16,
-  },
-  button: {
-    marginTop: 16,
-  },
-  error: {
-    color: 'red',
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  success: {
-    color: 'green',
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  registerButton: {
-    marginTop: 16,
+  appBar: {
+    backgroundColor: '#6200ee',
   },
   loaderContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  todoItem: {
-    padding: 16,
-    marginVertical: 8,
-    backgroundColor: '#f9f9f9',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#ddd',
-  },
-  todoTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 4,
+  scrollView: {
+    padding: 10,
   },
   noTodosContainer: {
     flex: 1,
@@ -55,39 +24,32 @@ export const styles = StyleSheet.create({
   },
   noTodosText: {
     fontSize: 18,
-    marginBottom: 16,
-    textAlign: 'center',
+    color: '#666',
   },
   createTodoButton: {
-    margin: 16,
-    padding: 4,
-    marginRight: 64,
-    marginLeft: 64,
-  },
-  descriptionInput: {
-    height: 100,
-  },
-  scrollView: {
-    padding: 16,
-  },
-  appBar: {
     position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 10,
+    bottom: 20,
+    right: 20,
   },
-  completedChip: {
-    backgroundColor: 'green',
+  todoItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
   },
-  pendingChip: {
-    backgroundColor: 'red',
+  checkIconContainer: {
+    marginRight: 10,
   },
-  chipText: {
-    color: 'white',
+  todoContent: {
+    flex: 1,
   },
-  markAsDoneButton: {
-    marginTop: 8,
-    backgroundColor: 'green',
+  todoTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  markAsDoneIcon: {
+    margin: 0,
   },
 });
+  
